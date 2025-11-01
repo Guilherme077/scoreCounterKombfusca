@@ -148,9 +148,9 @@ def countScore(img):
     # Verify 'X'
     
     rect_with_x = 0
-    k = 0
-    f = 0
-    n = 0
+    k = [0, 0, 0, 0]
+    f = [0, 0, 0, 0]
+    n = [0, 0, 0, 0]
 
     verified_x = 0
     verified_y = 0
@@ -214,12 +214,30 @@ def countScore(img):
                 if abs(cx_inside - center_roi_x) < limit_dist_x and \
                    abs(cy_inside - center_roi_y) < limit_dist_y:
                     has_x = True
-                    if verified_x == 2 or verified_x == 5 or verified_x == 8 or verified_x == 11:
-                        n += 1
-                    elif verified_x == 1 or verified_x == 4 or verified_x == 7 or verified_x == 10:
-                        f += 1
-                    elif verified_x == 0 or verified_x == 3 or verified_x == 6 or verified_x == 9:
-                        k += 1
+                    if verified_x == 2:
+                        n[0] += 1
+                    elif verified_x == 5:
+                        n[1] += 1
+                    elif verified_x == 8:
+                        n[2] += 1
+                    elif verified_x == 11:
+                        n[3] += 1
+                    elif verified_x == 1:
+                        f[0] += 1
+                    elif verified_x == 4:
+                        f[1] += 1
+                    elif verified_x == 7:
+                        f[2] += 1
+                    elif verified_x == 10:
+                        f[3] += 1
+                    elif verified_x == 0:
+                        k[0] += 1
+                    elif verified_x == 3:
+                        k[1] += 1
+                    elif verified_x == 6:
+                        k[2] += 1
+                    elif verified_x == 9:
+                        k[3] += 1
 
         if not has_x:
             # Another verification to check if there is some marking in the cell
@@ -232,6 +250,30 @@ def countScore(img):
                 
                 if 0.07 < percent_fill < 0.80:
                     has_x = True
+                    if verified_x == 2:
+                        n[0] += 1
+                    elif verified_x == 5:
+                        n[1] += 1
+                    elif verified_x == 8:
+                        n[2] += 1
+                    elif verified_x == 11:
+                        n[3] += 1
+                    elif verified_x == 1:
+                        f[0] += 1
+                    elif verified_x == 4:
+                        f[1] += 1
+                    elif verified_x == 7:
+                        f[2] += 1
+                    elif verified_x == 10:
+                        f[3] += 1
+                    elif verified_x == 0:
+                        k[0] += 1
+                    elif verified_x == 3:
+                        k[1] += 1
+                    elif verified_x == 6:
+                        k[2] += 1
+                    elif verified_x == 9:
+                        k[3] += 1
         
         if has_x:
             rect_with_x += 1
@@ -242,4 +284,4 @@ def countScore(img):
             verified_x = 0
             verified_y += 1
 
-    return jsonify({"kombi": k, "fusca": f, "new beetle": n})
+    return jsonify({"Player 0": {"kombi": k[0], "fusca": f[0], "new beetle": n[0]}, "Player 1": {"kombi": k[1], "fusca": f[1], "new beetle": n[1]}, "Player 2": {"kombi": k[2], "fusca": f[2], "new beetle": n[2]}, "Player 3": {"kombi": k[3], "fusca": f[3], "new beetle": n[3]},})
