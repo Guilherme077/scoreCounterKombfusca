@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from flask import jsonify
 
 def order_points(pts):
     pts = np.array(pts)
@@ -147,10 +148,17 @@ def countScore(img):
     # Verify 'X'
     
     rect_with_x = 0
+    k = 0
+    f = 0
+    n = 0
+
+    verified_x = 0
+    verified_y = 0
     
     img_to_detect_x = img_threshold 
     
     for x, y, w, h in rect_grid:
+
         
         cut_margin = 15 # Increase to ignore grid lines
         
@@ -206,6 +214,12 @@ def countScore(img):
                 if abs(cx_inside - center_roi_x) < limit_dist_x and \
                    abs(cy_inside - center_roi_y) < limit_dist_y:
                     has_x = True
+                    if verified_x == 2 or verified_x == 5 or verified_x == 8 or verified_x == 11:
+                        n += 1
+                    elif verified_x == 1 or verified_x == 4 or verified_x == 7 or verified_x == 10:
+                        f += 1
+                    elif verified_x == 0 or verified_x == 3 or verified_x == 6 or verified_x == 9:
+                        k += 1
 
         if not has_x:
             # Another verification to check if there is some marking in the cell
@@ -223,4 +237,9 @@ def countScore(img):
             rect_with_x += 1
             cv2.rectangle(result_img, (x, y), (x + w, y + h), (0, 255, 0), 4)
 
-    return rect_with_x
+        verified_x += 1
+        if verified_x >= 12:
+            verified_x = 0
+            verified_y += 1
+
+    return jsonify({"kombi": k, "fusca": f, "new beetle": n})

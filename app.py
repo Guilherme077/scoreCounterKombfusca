@@ -20,7 +20,7 @@ def scoreCounter():
 
     scores = countScore(img)
 
-    return jsonify({"message": "Picture verified", "scores": scores}), 201
+    return scores, 201
 
 if __name__ == "__main__":
     app.run(debug=True)
