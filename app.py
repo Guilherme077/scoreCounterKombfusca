@@ -1,6 +1,7 @@
 from flask import request, jsonify, Flask
 import numpy as np
 import cv2
+from scoreCounter import countScore
 
 app = Flask(__name__)
 
