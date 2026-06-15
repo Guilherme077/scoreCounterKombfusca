@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import base64
 from flask import jsonify
 
 def order_points(pts):
@@ -278,6 +279,10 @@ def countScore(img):
         if has_x:
             rect_with_x += 1
             cv2.rectangle(result_img, (x, y), (x + w, y + h), (0, 255, 0), 4)
+            #Draw the point
+            cx = x + w // 2
+            cy = y + h // 2
+            cv2.circle(result_img, (cx, cy), 5, (0, 255, 255), -1)
 
         verified_x += 1
         if verified_x >= 12:
@@ -286,4 +291,9 @@ def countScore(img):
     #cv2.imshow("Result", result_img)
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
-    return jsonify({"Player 0": {"kombi": k[0], "fusca": f[0], "new beetle": n[0]}, "Player 1": {"kombi": k[1], "fusca": f[1], "new beetle": n[1]}, "Player 2": {"kombi": k[2], "fusca": f[2], "new beetle": n[2]}, "Player 3": {"kombi": k[3], "fusca": f[3], "new beetle": n[3]},})
+
+    #Convert image to send by JSON
+    _, buffer = cv2.imencode(".png", result_img)
+    imageResult64 = base64.b64encode(buffer).decode("utf-8")
+
+    return jsonify({"Players": {"Player 0": {"kombi": k[0], "fusca": f[0], "new beetle": n[0]}, "Player 1": {"kombi": k[1], "fusca": f[1], "new beetle": n[1]}, "Player 2": {"kombi": k[2], "fusca": f[2], "new beetle": n[2]}, "Player 3": {"kombi": k[3], "fusca": f[3], "new beetle": n[3]}},"ProcessedImage": imageResult64})
