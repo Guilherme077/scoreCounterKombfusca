@@ -53,7 +53,7 @@ def countScore(img):
         M = cv2.moments(c)
         cx = int(M["m10"] / M["m00"])
         cy = int(M["m01"] / M["m00"])
-        squareT = 30 # Change with the size of the squares
+        squareT = 0 # Change with the size of the squares
         if(i == 0):
             points.append([cx+squareT, cy+squareT])
             cv2.circle(img_contours, (cx+squareT, cy+squareT), 10, (0, 255, 0), -1)
@@ -283,5 +283,7 @@ def countScore(img):
         if verified_x >= 12:
             verified_x = 0
             verified_y += 1
-
+    #cv2.imshow("Result", result_img)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
     return jsonify({"Player 0": {"kombi": k[0], "fusca": f[0], "new beetle": n[0]}, "Player 1": {"kombi": k[1], "fusca": f[1], "new beetle": n[1]}, "Player 2": {"kombi": k[2], "fusca": f[2], "new beetle": n[2]}, "Player 3": {"kombi": k[3], "fusca": f[3], "new beetle": n[3]},})
